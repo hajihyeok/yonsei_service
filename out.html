@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>접속 기록</title>
+  <script>
+    async function logAccess() {
+      try {
+        // 사용자 IP 가져오기
+        const ipResponse = await fetch("https://api.ipify.org?format=json");
+        const ipData = await ipResponse.json();
+
+        const ua = navigator.userAgent;
+        const ref = document.referrer;
+        const ip = ipData.ip;
+
+        // Apps Script URL
+        const scriptURL = "https://script.google.com/macros/s/AKfycbzkOkJAjL7T4_eknKmP8p2QOj6wV7Whpo2ohyUUsevhy-iujIADoABmuyL216Qe69I/exec";
+        const params = `?ip=${encodeURIComponent(ip)}&ua=${encodeURIComponent(ua)}&ref=${encodeURIComponent(ref)}`;
+
+        // 로그 전송
+        await fetch(scriptURL + params);
+        console.log("✅ 접속 로그 전송 완료");
+      } catch (err) {
+        console.error("❌ 로그 전송 실패:", err);
+      }
+    }
+
+    window.onload = logAccess;
+  </script>
+</head>
+<body>
+  <h2>정상적으로 페이지에 접속하셨습니다.</h2>
+</body>
+</html>
